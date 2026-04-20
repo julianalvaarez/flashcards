@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import StudySession from '@/components/StudySession';
-import { Loader2, ArrowLeft, Zap } from 'lucide-react';
+import { Loader2, ArrowLeft, Zap, Languages } from 'lucide-react';
 import Link from 'next/link';
 
 export default function FolderStudy() {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const isFreeMode = searchParams.get('mode') === 'free';
+  const direction = (searchParams.get('dir') as 'en-es' | 'es-en') || 'en-es';
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,14 +65,18 @@ export default function FolderStudy() {
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold flex items-center gap-2">
             {isFreeMode && <Zap size={20} className="text-orange-400 fill-orange-400" />}
+            {direction === 'es-en' && <Languages size={20} className="text-accent" />}
             {id === 'all' ? 'Repaso General' : 'Sesión de Carpeta'}
           </h1>
-          {isFreeMode && <span className="text-xs text-orange-400 font-bold uppercase tracking-widest">Modo Libre</span>}
+          <div className="flex gap-2 items-center">
+            {isFreeMode && <span className="text-[10px] bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded font-bold uppercase tracking-widest">Modo Libre</span>}
+            {direction === 'es-en' && <span className="text-[10px] bg-accent/20 text-accent px-2 py-0.5 rounded font-bold uppercase tracking-widest">Modo Inverso</span>}
+          </div>
         </div>
       </header>
 
       {cards.length > 0 ? (
-        <StudySession cards={cards} />
+        <StudySession cards={cards} direction={direction} />
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
           <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-6 text-muted">

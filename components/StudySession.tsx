@@ -20,9 +20,10 @@ interface Card {
 
 interface StudySessionProps {
   cards: Card[];
+  direction?: 'en-es' | 'es-en';
 }
 
-export default function StudySession({ cards: initialCards }: StudySessionProps) {
+export default function StudySession({ cards: initialCards, direction = 'en-es' }: StudySessionProps) {
   const [cards, setCards] = useState(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sessionFinished, setSessionFinished] = useState(false);
@@ -113,6 +114,7 @@ export default function StudySession({ cards: initialCards }: StudySessionProps)
         meaning_en={currentCard.meaning_en}
         example={currentCard.example}
         onAnswer={handleAnswer}
+        direction={direction}
       />
     </div>
   );

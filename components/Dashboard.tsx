@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useDashboard } from '@/hooks/useDashboard';
 import FolderCard from './FolderCard';
-import { Plus, GraduationCap, LayoutGrid, Loader2, Zap } from 'lucide-react';
+import { Plus, GraduationCap, LayoutGrid, Loader2, Zap, Languages } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Dashboard() {
@@ -58,6 +58,17 @@ export default function Dashboard() {
             >
               <GraduationCap size={20} />
               Estudiar Pendientes
+            </Link>
+            <Link 
+              href="/study/all?dir=es-en"
+              className={`inline-flex items-center gap-2 py-3 px-6 rounded-xl font-bold transition-all ${
+                totalDue > 0 
+                  ? 'bg-white text-black shadow-lg shadow-white/5 hover:scale-105' 
+                  : 'bg-white/5 text-muted pointer-events-none'
+              }`}
+            >
+              <Languages size={20} />
+              Repaso Inverso
             </Link>
             <Link 
               href="/study/all?mode=free"
