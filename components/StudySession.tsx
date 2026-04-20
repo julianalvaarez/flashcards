@@ -6,6 +6,7 @@ import { calculateNextReview } from '@/lib/srsLogic';
 import { supabase } from '@/lib/supabase';
 import { CheckCircle2, Home } from 'lucide-react';
 import Link from 'next/link';
+import { useStreak } from '@/hooks/useStreak';
 
 interface Card {
   id: string;
@@ -27,6 +28,7 @@ export default function StudySession({ cards: initialCards, direction = 'en-es' 
   const [cards, setCards] = useState(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sessionFinished, setSessionFinished] = useState(false);
+  const { completeDailyWords } = useStreak();
 
   const handleAnswer = async (isCorrect: boolean) => {
     const currentCard = cards[currentIndex];
@@ -58,6 +60,17 @@ export default function StudySession({ cards: initialCards, direction = 'en-es' 
       setCurrentIndex(currentIndex + 1);
     } else {
       setSessionFinished(true);
+      // Logic for streak: Check if all due cards are finished
+      const now = new Date().toISOString();
+      const { count } = await supabase
+        .from('cards')
+        .select('*', { count: 'exact', head: true })
+        .lte('next_review', now);
+
+      if (count === 0) {
+        // If no more cards are due, the user has completed their "palabras diarias"
+        await completeDailyWords();
+      }
     }
   };
 

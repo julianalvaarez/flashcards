@@ -5,6 +5,7 @@ import { useDashboard } from '@/hooks/useDashboard';
 import FolderCard from './FolderCard';
 import { Plus, GraduationCap, LayoutGrid, Loader2, Zap, Languages } from 'lucide-react';
 import Link from 'next/link';
+import StreakBadge from './StreakBadge';
 
 export default function Dashboard() {
   const { folders, loading, createFolder } = useDashboard();
@@ -33,9 +34,12 @@ export default function Dashboard() {
   return (
     <div className="animate-fade-in flex flex-col gap-8 py-8">
       {/* Header */}
-      <header className="flex flex-col gap-1">
-        <h1 className="text-3xl font-extrabold tracking-tight">Mis Repasos</h1>
-        <p className="text-muted">Desarrolla tu fluidez palabra a palabra.</p>
+      <header className="flex justify-between items-start">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-extrabold tracking-tight">Mis Repasos</h1>
+          <p className="text-muted">Desarrolla tu fluidez palabra a palabra.</p>
+        </div>
+        <StreakBadge />
       </header>
 
       {/* Hero Action */}
